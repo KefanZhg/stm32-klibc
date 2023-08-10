@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @date    Mar 18, 2023
-  * @file    kdc.h
+  * @date    Aug 7, 2023
+  * @file    kdc_tb6612.h
   * @author  Kefan Zheng
-  * @brief   Basic file for Klibc Device library
+  * @brief   
   * @version V0.0.0
   * @contact kirk_z@yeah.net
-  @verbatim
+  * @verbatim
   ==============================================================================
                         ##### How to use this driver #####
   ==============================================================================
@@ -20,37 +20,52 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef KDC_H_
-#define KDC_H_
+#ifndef KDC_TB6612_H_
+#define KDC_TB6612_H_
 
 #ifdef __cplusplus
-  extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+#include "kdc.h"
+#include "kdc_pin.h"
+
+#ifdef HAL_GPIO_MODULE_ENABLED
+#ifdef HAL_TIM_MODULE_ENABLED
+
 /* Exported types ------------------------------------------------------------*/
-/**
- * @brief  enum of KDC status
-*/
-typedef enum {
-  KDC_OK       = 0x00,
-  KDC_ERROR    = 0x01,
-  KDC_BUSY     = 0x02,
-  KDC_TIMEOUT  = 0x03,
-} KDC_State_t;
+typedef struct _KDC_TB6612_t {
+    /* Common Read */
+    float Speed;
+    /* Common Config */
 
-typedef enum {
-  KDC_PortNone = 0,
-  KDC_PortRegular = 1,
-  KDC_PortComplement = 2,
-  KDC_PortBoth = 3
-} KDC_TIM_Port_t;
-
+    /* Private */
+    int8_t Dir;
+    TIM_HandleTypeDef *Port;
+    uint32_t Channel;
+    uint8_t Complement;
+    KDC_Pin_t Pin1, Pin2;
+} KDC_TB6612_t;
 /* Exported constants --------------------------------------------------------*/
-#define KDC_DEFAULT_TIMEOUT 0xFF
+#define KDC_TB6612_Default_Config  \
+{                                  \
+  .Speed = 0,                      \
+  .Dir = 0,                        \
+}
 
 /* Exported macros -----------------------------------------------------------*/
+#define KDC_TB6612_SetPort(ktb,port,chn,com) \
+    {(ktb)->Port=(port);(ktb)->Channel=(chn);(ktb)->Complement=(com);}
+
+#define KDC_TB6612_SetPin1(ktb,port,pin) \
+    KDC_Pin_Init(&((ktb)->Pin1),(port),(pin))
+
+#define KDC_TB6612_SetPin2(ktb,port,pin) \
+    KDC_Pin_Init(&((ktb)->Pin2),(port),(pin))
+
+#define KDC_TB6612_SetSpeed(ktb,speed) \
+    {(ktb)->Speed=(speed);KDC_TB6612_Refresh((ktb));}
 
 /* Private constants ---------------------------------------------------------*/
 
@@ -59,18 +74,25 @@ typedef enum {
 /* Exported functions --------------------------------------------------------*/
 
 /* Initialization and de-initialization functions *****************************/
+void KDC_TB6612_Start(KDC_TB6612_t* ktb);
+void KDC_TB6612_Stop(KDC_TB6612_t* ktb);
 
 /* Configuration functions ****************************************************/
 
 /* IO operation functions *****************************************************/
+void KDC_TB6612_Refresh(KDC_TB6612_t *ktb);
+
 /* State and Error functions **************************************************/
 
 /* Private functions ---------------------------------------------------------*/
+
+#endif /* HAL_TIM_MODULE_ENABLED */
+#endif /* HAL_GPIO_MODULE_ENABLED */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* KDC_H_ */
+#endif  /* KDC_TB6612_H_ */
 
-/******** (C) COPYRIGHT github.com/KefanZhg/ *** END OF FILE kdc.h ***/
+/******** (C) COPYRIGHT github.com/KefanZhg/ *** END OF FILE kdc_tb6612.h ***/

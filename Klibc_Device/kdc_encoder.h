@@ -1,16 +1,17 @@
 /**
   ******************************************************************************
-  * @date    Mar 18, 2023
-  * @file    kdc.h
+  * @date    Aug 7, 2023
+  * @file    kdc_encoder.h
   * @author  Kefan Zheng
-  * @brief   Basic file for Klibc Device library
+  * @brief   
   * @version V0.0.0
   * @contact kirk_z@yeah.net
-  @verbatim
+  * @verbatim
   ==============================================================================
                         ##### How to use this driver #####
   ==============================================================================
 
+  TODO: Pre-processing, LPF
 
   @endverbatim
   ******************************************************************************
@@ -20,38 +21,42 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef KDC_H_
-#define KDC_H_
+#ifndef KDC_ENCODER_H_
+#define KDC_ENCODER_H_
 
 #ifdef __cplusplus
-  extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
-/* Exported types ------------------------------------------------------------*/
-/**
- * @brief  enum of KDC status
-*/
-typedef enum {
-  KDC_OK       = 0x00,
-  KDC_ERROR    = 0x01,
-  KDC_BUSY     = 0x02,
-  KDC_TIMEOUT  = 0x03,
-} KDC_State_t;
+#include "kdc.h"
 
-typedef enum {
-  KDC_PortNone = 0,
-  KDC_PortRegular = 1,
-  KDC_PortComplement = 2,
-  KDC_PortBoth = 3
-} KDC_TIM_Port_t;
+/* Exported types ------------------------------------------------------------*/
+typedef struct _KDC_Encoder_t {
+    /* Common Read */
+    float vRps;
+    /* Common Config */
+    TIM_HandleTypeDef* Port;
+    int8_t Dir;
+    uint32_t Tpr; // Tick per revolution
+    /* Private */
+    double vTps; // Tick per second
+    int32_t pTick;
+    uint32_t Last;
+    TIM_TypeDef* Tim;
+} KDC_Encoder_t;
 
 /* Exported constants --------------------------------------------------------*/
-#define KDC_DEFAULT_TIMEOUT 0xFF
 
 /* Exported macros -----------------------------------------------------------*/
+#define KDC_Encoder_pRev(kecd) \
+  (((float)(kecd)->pTick)/(kecd)->Tpr)
 
+#define KDC_Encoder_vRps(kecd) \
+  ((kecd)->vRps)
+
+#define KDC_Encoder_vRpm(kecd) \
+  ((kecd)->vRps*60.0)
 /* Private constants ---------------------------------------------------------*/
 
 /* Private macros ------------------------------------------------------------*/
@@ -59,10 +64,15 @@ typedef enum {
 /* Exported functions --------------------------------------------------------*/
 
 /* Initialization and de-initialization functions *****************************/
+void KDC_Encoder_Clear(KDC_Encoder_t* kecd);
+void KDC_Encoder_Start(KDC_Encoder_t* kecd);
 
 /* Configuration functions ****************************************************/
+void KDC_Encoder_Stop(KDC_Encoder_t* kecd);
+void KDC_Encoder_Convert(KDC_Encoder_t* kecd);
 
 /* IO operation functions *****************************************************/
+
 /* State and Error functions **************************************************/
 
 /* Private functions ---------------------------------------------------------*/
@@ -71,6 +81,6 @@ typedef enum {
 }
 #endif
 
-#endif  /* KDC_H_ */
+#endif  /* KDC_ENCODER_H_ */
 
-/******** (C) COPYRIGHT github.com/KefanZhg/ *** END OF FILE kdc.h ***/
+/******** (C) COPYRIGHT github.com/KefanZhg/ *** END OF FILE kdc_encoder.h ***/

@@ -37,8 +37,8 @@ extern "C" {
  * @brief  structure of pin collector
 */
 typedef struct _KDC_Pin_t {
-	GPIO_TypeDef* port;
-	uint16_t pin;
+	GPIO_TypeDef* Port;
+	uint16_t Pin;
 } KDC_Pin_t;
 
 /* Exported constants --------------------------------------------------------*/
@@ -56,37 +56,39 @@ typedef struct _KDC_Pin_t {
  * @brief  Initialize the pin
 */
 #define KDC_Pin_Init(dpin,port,pin) \
-		{(dpin)->port=(port);(dpin)->pin=pin;}
+		{(dpin)->Port=(port);(dpin)->Pin=(pin);}
 
 /**
  * @brief  Set the pin to 1
 */
 #define KDC_Pin_Set(dpin) \
-		HAL_GPIO_WritePin((dpin)->port,(dpin)->pin,GPIO_PIN_SET)
+    (dpin)->Port->BSRR = (uint32_t)(dpin)->Pin
+		// HAL_GPIO_WritePin((dpin)->port,(dpin)->pin,GPIO_PIN_SET)
 
 /**
  * @brief  Reset the pin to 0
 */
 #define KDC_Pin_Reset(dpin) \
-		HAL_GPIO_WritePin((dpin)->port,(dpin)->pin,GPIO_PIN_RESET)
+    (dpin)->Port->BRR = (uint32_t)(dpin)->Pin
+	//	HAL_GPIO_WritePin((dpin)->port,(dpin)->pin,GPIO_PIN_RESET)
 
 /**
  * @brief  Toggle the pin output
 */
 #define KDC_Pin_Toggle(dpin) \
-		HAL_GPIO_TogglePin((dpin)->port,(dpin)->pin)
+		(dpin)->Port->ODR ^= (dpin)->Pin
 
 /**
  * @brief  Write the pin to a designated level
 */
 #define KDC_Pin_Write(dpin,level) \
-		HAL_GPIO_WritePin((dpin)->port,(dpin)->pin,(level)?GPIO_PIN_SET:GPIO_PIN_RESET)
+		HAL_GPIO_WritePin((dpin)->Port,(dpin)->Pin,(level)?GPIO_PIN_SET:GPIO_PIN_RESET)
 
 /**
  * @brief  Read the current pin level
 */
 #define KDC_Pin_Read(dpin) \
-		HAL_GPIO_ReadPin((dpin)->port,(dpin)->pin)
+		((dpin)->Port->IDR & (dpin)->Pin) ? GPIO_PIN_SET:GPIO_PIN_RESET
 
 /* Configuration functions ****************************************************/
 
