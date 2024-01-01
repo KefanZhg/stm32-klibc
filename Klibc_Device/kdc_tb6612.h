@@ -24,7 +24,7 @@
 #define KDC_TB6612_H_
 
 #ifdef __cplusplus
- extern "C" {
+  extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -32,7 +32,6 @@
 #include "kdc_pin.h"
 
 #ifdef HAL_GPIO_MODULE_ENABLED
-#ifdef HAL_TIM_MODULE_ENABLED
 
 /* Exported types ------------------------------------------------------------*/
 typedef struct _KDC_TB6612_t {
@@ -42,8 +41,10 @@ typedef struct _KDC_TB6612_t {
 
     /* Private */
     int8_t Dir;
+#ifdef HAL_TIM_MODULE_ENABLED
     TIM_HandleTypeDef *Port;
     uint32_t Channel;
+#endif /* HAL_TIM_MODULE_ENABLED */
     uint8_t Complement;
     KDC_Pin_t Pin1, Pin2;
 } KDC_TB6612_t;
@@ -86,7 +87,6 @@ void KDC_TB6612_Refresh(KDC_TB6612_t *ktb);
 
 /* Private functions ---------------------------------------------------------*/
 
-#endif /* HAL_TIM_MODULE_ENABLED */
 #endif /* HAL_GPIO_MODULE_ENABLED */
 
 #ifdef __cplusplus

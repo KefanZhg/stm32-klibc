@@ -24,21 +24,22 @@
 #define KLIBC_DEVICE_KDC_BH1750_H_
 
 #ifdef __cplusplus
-extern "C" {
+  extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "kdc.h"
 
-#ifdef HAL_I2C_MODULE_ENABLED
 
 /* Exported types ------------------------------------------------------------*/
 /**
  * @brief  type of BH1750
 */
 typedef struct _KDC_BH1750_t {
+#ifdef HAL_I2C_MODULE_ENABLED
   I2C_HandleTypeDef *hi2c;
   I2C_TypeDef *i2c;
+#endif /* HAL_I2C_MODULE_ENABLED */
   uint16_t address;
   uint16_t luminance;
 } KDC_BH1750_t;
@@ -72,7 +73,11 @@ typedef struct _KDC_BH1750_t {
 /* Exported functions --------------------------------------------------------*/
 
 /* Initialization and de-initialization functions *****************************/
+#ifdef HAL_I2C_MODULE_ENABLED
 void KDC_BH1750_Init(KDC_BH1750_t* dbh, I2C_HandleTypeDef *hi2c, uint16_t address);
+#else
+void KDC_BH1750_Init(void* dbh, void *hi2c, uint16_t address);
+#endif /* HAL_I2C_MODULE_ENABLED */
 
 /* Configuration functions ****************************************************/
 void KDC_BH1750_Start(KDC_BH1750_t* dbh);
@@ -83,7 +88,6 @@ void KDC_BH1750_Convert(KDC_BH1750_t* dbh);
 
 /* Private functions ---------------------------------------------------------*/
 
-#endif
 
 #ifdef __cplusplus
 }

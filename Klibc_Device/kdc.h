@@ -28,18 +28,9 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
-/* Exported types ------------------------------------------------------------*/
-/**
- * @brief  enum of KDC status
-*/
-typedef enum {
-  KDC_OK       = 0x00,
-  KDC_ERROR    = 0x01,
-  KDC_BUSY     = 0x02,
-  KDC_TIMEOUT  = 0x03,
-} KDC_State_t;
+#include "klibc.h"
 
+/* Exported types ------------------------------------------------------------*/
 typedef enum {
   KDC_PortNone = 0,
   KDC_PortRegular = 1,
@@ -48,7 +39,6 @@ typedef enum {
 } KDC_TIM_Port_t;
 
 /* Exported constants --------------------------------------------------------*/
-#define KDC_DEFAULT_TIMEOUT 0xFF
 
 /* Exported macros -----------------------------------------------------------*/
 

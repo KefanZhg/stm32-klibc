@@ -28,18 +28,9 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+#include "klibc.h"
 
 /* Exported types ------------------------------------------------------------*/
-/**
- * @brief  enum of KDR status
-*/
-typedef enum {
-	KDR_OK       = 0x00,
-	KDR_ERROR    = 0x01,
-	KDR_BUSY     = 0x02,
-	KDR_TIMEOUT  = 0x03,
-} KDR_State_t;
 
 /* Exported constants --------------------------------------------------------*/
 

@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @date    Mar 19, 2023
-  * @file    kdc_pin.h
+  * @date    Jan 1, 2024
+  * @file    klibc.h
   * @author  Kefan Zheng
   * @brief   
   * @version V0.0.0
   * @contact kirk_z@yeah.net
-  @verbatim
+  * @verbatim
   ==============================================================================
                         ##### How to use this driver #####
   ==============================================================================
@@ -20,30 +20,29 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef KDC_PIN_H_
-#define KDC_PIN_H_
+#ifndef KLIBC_H_
+#define KLIBC_H_
 
 #ifdef __cplusplus
   extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "kdc.h"
-
-#ifdef HAL_GPIO_MODULE_ENABLED
+#include "klibc_default_config.h"
 
 /* Exported types ------------------------------------------------------------*/
-/**
- * @brief  structure of pin collector
-*/
-typedef struct _KDC_Pin_t {
-	GPIO_TypeDef* Port;
-	uint16_t Pin;
-} KDC_Pin_t;
 
 /* Exported constants --------------------------------------------------------*/
 
 /* Exported macros -----------------------------------------------------------*/
+#define KLIBC_ERROR_BASE (0x0000)
+
+#define KLIBC_SUCCESS                       (KLIBC_ERROR_BASE + 0)
+#define KLIBC_ERROR_UNSPECIFIED             (KLIBC_ERROR_BASE + 1)
+#define KLIBC_ERROR_BUSY                    (KLIBC_ERROR_BASE + 2)
+#define KLIBC_ERROR_TIMEOUT                 (KLIBC_ERROR_BASE + 3)
+
+
 
 /* Private constants ---------------------------------------------------------*/
 
@@ -52,43 +51,6 @@ typedef struct _KDC_Pin_t {
 /* Exported functions --------------------------------------------------------*/
 
 /* Initialization and de-initialization functions *****************************/
-/**
- * @brief  Initialize the pin
-*/
-#define KDC_Pin_Init(dpin,port,pin) \
-		{(dpin)->Port=(port);(dpin)->Pin=(pin);}
-
-/**
- * @brief  Set the pin to 1
-*/
-#define KDC_Pin_Set(dpin) \
-    (dpin)->Port->BSRR = (uint32_t)(dpin)->Pin
-		// HAL_GPIO_WritePin((dpin)->port,(dpin)->pin,GPIO_PIN_SET)
-
-/**
- * @brief  Reset the pin to 0
-*/
-#define KDC_Pin_Reset(dpin) \
-    (dpin)->Port->BRR = (uint32_t)(dpin)->Pin
-	//	HAL_GPIO_WritePin((dpin)->port,(dpin)->pin,GPIO_PIN_RESET)
-
-/**
- * @brief  Toggle the pin output
-*/
-#define KDC_Pin_Toggle(dpin) \
-		(dpin)->Port->ODR ^= (dpin)->Pin
-
-/**
- * @brief  Write the pin to a designated level
-*/
-#define KDC_Pin_Write(dpin,level) \
-		HAL_GPIO_WritePin((dpin)->Port,(dpin)->Pin,(level)?GPIO_PIN_SET:GPIO_PIN_RESET)
-
-/**
- * @brief  Read the current pin level
-*/
-#define KDC_Pin_Read(dpin) \
-		((dpin)->Port->IDR & (dpin)->Pin) ? GPIO_PIN_SET:GPIO_PIN_RESET
 
 /* Configuration functions ****************************************************/
 
@@ -97,12 +59,10 @@ typedef struct _KDC_Pin_t {
 
 /* Private functions ---------------------------------------------------------*/
 
-#endif
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* KDC_PIN_H_ */
+#endif  /* KLIBC_H_ */
 
-/******** (C) COPYRIGHT github.com/KefanZhg/ *** END OF FILE kdc_pin.h ***/
+/******** (C) COPYRIGHT github.com/KefanZhg/ *** END OF FILE klibc.h ***/

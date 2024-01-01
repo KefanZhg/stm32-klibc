@@ -25,7 +25,7 @@
 #define KDC_ENCODER_H_
 
 #ifdef __cplusplus
- extern "C" {
+  extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -33,17 +33,19 @@
 
 /* Exported types ------------------------------------------------------------*/
 typedef struct _KDC_Encoder_t {
-    /* Common Read */
-    float vRps;
-    /* Common Config */
-    TIM_HandleTypeDef* Port;
-    int8_t Dir;
-    uint32_t Tpr; // Tick per revolution
-    /* Private */
-    double vTps; // Tick per second
-    int32_t pTick;
-    uint32_t Last;
-    TIM_TypeDef* Tim;
+  /* Common Read */
+  float vRps;
+  /* Common Config */
+#ifdef HAL_TIM_MODULE_ENABLED
+  TIM_HandleTypeDef* Port;
+#endif /* HAL_TIM_MODULE_ENABLED */
+  int8_t Dir;
+  uint32_t Tpr; // Tick per revolution
+  /* Private */
+  double vTps; // Tick per second
+  int32_t pTick;
+  uint32_t Last;
+  TIM_TypeDef* Tim;
 } KDC_Encoder_t;
 
 /* Exported constants --------------------------------------------------------*/

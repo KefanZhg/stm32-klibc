@@ -25,20 +25,24 @@ void KDC_TB6612_Start(KDC_TB6612_t* ktb)
   KDC_Pin_Reset(&ktb->Pin1);
   KDC_Pin_Reset(&ktb->Pin2);
 
+#ifdef HAL_TIM_MODULE_ENABLED
   HAL_TIM_PWM_Start(ktb->Port, ktb->Channel);
   if(ktb->Complement == KDC_PortComplement)
   {
     HAL_TIMEx_PWMN_Start(ktb->Port, ktb->Channel);
   }
+#endif /* HAL_TIM_MODULE_ENABLED */
 }
 
 void KDC_TB6612_Stop(KDC_TB6612_t* ktb)
 {
+#ifdef HAL_TIM_MODULE_ENABLED
   HAL_TIM_PWM_Stop(ktb->Port, ktb->Channel);
   if(ktb->Complement == KDC_PortComplement)
   {
     HAL_TIMEx_PWMN_Stop(ktb->Port, ktb->Channel);
   }
+#endif /* HAL_TIM_MODULE_ENABLED */
 }
 /* Configuration functions ****************************************************/
 
@@ -46,9 +50,11 @@ void KDC_TB6612_Stop(KDC_TB6612_t* ktb)
 void KDC_TB6612_Refresh(KDC_TB6612_t *ktb)
 {
   float ftmp;
+#ifdef HAL_TIM_MODULE_ENABLED
   uint16_t utmp;
   TIM_HandleTypeDef *port;
   uint32_t channel;
+#endif /* HAL_TIM_MODULE_ENABLED */
 
   if(ktb == NULL)
     return;
@@ -90,6 +96,7 @@ void KDC_TB6612_Refresh(KDC_TB6612_t *ktb)
   if(ftmp < 0)
     ftmp = -ftmp;
 
+#ifdef HAL_TIM_MODULE_ENABLED
   port = ktb->Port;
   channel = ktb->Channel;
   utmp = port->Instance->ARR;
@@ -99,6 +106,7 @@ void KDC_TB6612_Refresh(KDC_TB6612_t *ktb)
   utmp = (uint16_t)ftmp;
 
   __HAL_TIM_SET_COMPARE(port, channel, utmp);
+#endif /* HAL_TIM_MODULE_ENABLED */
 }
 /* Peripheral State and Error functions ***************************************/
 

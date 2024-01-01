@@ -25,7 +25,7 @@
 #define KLIBC_DEVICE_KDC_PCF8574_H_
 
 #ifdef __cplusplus
-extern "C" {
+  extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/

@@ -32,19 +32,33 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "kdr.h"
 #include "stdio.h"
-
 /* Exported types ------------------------------------------------------------*/
 
 /* Exported constants --------------------------------------------------------*/
+#define KDR_LOG_LEVEL_CRITICAL 0
+#define KDR_LOG_LEVEL_ERROR    1
+#define KDR_LOG_LEVEL_WARNING  2
+#define KDR_LOG_LEVEL_INFO     3
+#define KDR_LOG_LEVEL_DEBUG    4
 
 /* Exported macros -----------------------------------------------------------*/
-#ifdef DEBUG
-#define KDR_LOG_Printf(intf,fmt,...) \
-	printf("[LOG] %s:%s,%d:\t" fmt, __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__)
-#else
-#define KDR_LOG_Printf(intf,fmt,...) \
-	printf("[LOG]" fmt, ## __VA_ARGS__)
-#endif
+#define KDR_LOG_BASE printf
+
+#define KDR_LOG_CRITICAL(fmt,...) \
+  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_CRITICAL){KDR_LOG_BASE("[CRITICAL] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+
+#define KDR_LOG_ERROR(fmt,...) \
+  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_ERROR){KDR_LOG_BASE("[ERROR] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+
+#define KDR_LOG_WARNING(fmt,...) \
+  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_WARNING){KDR_LOG_BASE("[WARNING] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+  
+#define KDR_LOG_INFO(fmt,...) \
+  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_INFO){KDR_LOG_BASE("[INFO] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+  
+#define KDR_LOG_DEBUG(fmt,...) \
+  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_DEBUG){KDR_LOG_BASE("[DEBUG] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+
 /* Private constants ---------------------------------------------------------*/
 
 /* Private macros ------------------------------------------------------------*/

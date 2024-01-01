@@ -24,7 +24,7 @@
 #define KLIBC_DEVICE_KDC_SHT30_H_
 
 #ifdef __cplusplus
-extern "C" {
+  extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/

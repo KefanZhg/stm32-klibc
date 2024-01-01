@@ -10,6 +10,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "kdc_encoder.h"
+
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -21,18 +23,22 @@
 /* Initialization and de-initialization functions *****************************/
 void KDC_Encoder_Start(KDC_Encoder_t* kecd)
 {
+#ifdef HAL_TIM_MODULE_ENABLED
   if(!kecd->Tpr) kecd->Tpr = 1;
   kecd->Tim = kecd->Port->Instance;
   HAL_TIM_Encoder_Start(kecd->Port, TIM_CHANNEL_1|TIM_CHANNEL_2);
 
   kecd->Last = HAL_GetTick();
+#endif /* HAL_TIM_MODULE_ENABLED */
 }
 
 void KDC_Encoder_Stop(KDC_Encoder_t* kecd)
 {
+#ifdef HAL_TIM_MODULE_ENABLED
    HAL_TIM_Encoder_Stop(kecd->Port, TIM_CHANNEL_1|TIM_CHANNEL_2);
 
    KDC_Encoder_Convert(kecd);
+#endif /* HAL_TIM_MODULE_ENABLED */
 }
 
 
@@ -72,5 +78,6 @@ void KDC_Encoder_Convert(KDC_Encoder_t* kecd)
 }
 
 /* IO operation functions *****************************************************/
+
 
 /******** (C) COPYRIGHT github.com/KefanZhg/ *** END OF FILE kdc_encoder.c ***/

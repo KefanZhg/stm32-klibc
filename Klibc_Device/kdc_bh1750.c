@@ -11,7 +11,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "kdc_bh1750.h"
 
-#ifdef HAL_I2C_MODULE_ENABLED
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -30,10 +29,10 @@
  *
  * @retval None
 */
+#ifdef HAL_I2C_MODULE_ENABLED
 void KDC_BH1750_Init(KDC_BH1750_t* dbh, I2C_HandleTypeDef *hi2c, uint16_t address)
 {
   uint8_t t_Data = 0x01;
-
   /* Invalid pointer */
   if(dbh == NULL)
     return;
@@ -49,6 +48,11 @@ void KDC_BH1750_Init(KDC_BH1750_t* dbh, I2C_HandleTypeDef *hi2c, uint16_t addres
 
   /* Configuration */
   HAL_I2C_Master_Transmit(dbh->hi2c, dbh->address, &t_Data, 1, 0x1FFFF);
+#else
+void KDC_BH1750_Init(void* dbh, void *hi2c, uint16_t address)
+{
+  // [TODO] Report an Error
+#endif /* HAL_I2C_MODULE_ENABLED */
 }
 
 /* Configuration functions ****************************************************/
@@ -60,10 +64,12 @@ void KDC_BH1750_Init(KDC_BH1750_t* dbh, I2C_HandleTypeDef *hi2c, uint16_t addres
 */
 void KDC_BH1750_Start(KDC_BH1750_t* dbh)
 {
+#ifdef HAL_I2C_MODULE_ENABLED
   uint8_t t_Data = 0x10;
 
   /* Configure */
   HAL_I2C_Master_Transmit(dbh->hi2c, dbh->address, &t_Data, 1, 0xff);
+#endif /* HAL_I2C_MODULE_ENABLED */
 }
 
 /**
@@ -75,8 +81,10 @@ void KDC_BH1750_Start(KDC_BH1750_t* dbh)
 */
 void KDC_BH1750_Convert(KDC_BH1750_t *dbh)
 {
+#ifdef HAL_I2C_MODULE_ENABLED
   uint16_t result;
   uint8_t BUF[2];
+
 
   /* Start preparation */
   KDC_BH1750_Start(dbh);
@@ -89,11 +97,13 @@ void KDC_BH1750_Convert(KDC_BH1750_t *dbh)
   result=BUF[0];
   result=(result<<8)+BUF[1];
   dbh->luminance = result;
+  
+#endif /* HAL_I2C_MODULE_ENABLED */
+
 }
 
 /* IO operation functions *****************************************************/
 /* Peripheral State and Error functions ***************************************/
 
-#endif
 
 /******** (C) COPYRIGHT github.com/KefanZhg/ *** END OF FILE kdc_bh1750.c ***/
