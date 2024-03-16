@@ -45,19 +45,19 @@ extern "C" {
 #define KDR_LOG_BASE printf
 
 #define KDR_LOG_CRITICAL(fmt,...) \
-  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_CRITICAL){KDR_LOG_BASE("[CRITICAL] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+  {if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_CRITICAL){KDR_LOG_BASE("[CRITICAL] %s,%d: " fmt "\r\n",  __FUNCTION__, __LINE__, ## __VA_ARGS__);}}
 
 #define KDR_LOG_ERROR(fmt,...) \
-  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_ERROR){KDR_LOG_BASE("[ERROR] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+  {if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_ERROR){KDR_LOG_BASE("[ERROR] %s,%d: " fmt "\r\n",  __FUNCTION__, __LINE__, ## __VA_ARGS__);}}
 
 #define KDR_LOG_WARNING(fmt,...) \
-  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_WARNING){KDR_LOG_BASE("[WARNING] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+  {if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_WARNING){KDR_LOG_BASE("[WARNING] %s,%d: " fmt "\r\n",  __FUNCTION__, __LINE__, ## __VA_ARGS__);}}
   
 #define KDR_LOG_INFO(fmt,...) \
-  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_INFO){KDR_LOG_BASE("[INFO] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+  {if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_INFO){KDR_LOG_BASE("[INFO] %s,%d: " fmt "\r\n",  __FUNCTION__, __LINE__, ## __VA_ARGS__);}}
   
 #define KDR_LOG_DEBUG(fmt,...) \
-  if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_DEBUG){KDR_LOG_BASE("[DEBUG] %s:%s,%d: " fmt "\r\n", __FILE__, __FUNCTION__, __LINE__, ## __VA_ARGS__);}
+  {if(KDR_LOG_LEVEL>=KDR_LOG_LEVEL_DEBUG){KDR_LOG_BASE("[DEBUG] %s,%d: " fmt "\r\n",  __FUNCTION__, __LINE__, ## __VA_ARGS__);}}
 
 /* Private constants ---------------------------------------------------------*/
 
