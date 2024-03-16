@@ -58,7 +58,27 @@ const uint32_t KDR_MATH_BIT_TRIANGLE[33]=
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
+uint8_t KDR_MATH_LSB_Index(uint32_t num)
+{
+  uint8_t rst = 0;
 
+  if(!num)
+    return 0xFF;
+
+  while(!(num & 0x3F))
+  {
+    rst += 6;
+    num >>= 6;
+  }
+
+  while(!(num & 1))
+  {
+    rst ++;
+    num >>= 1;
+  }
+
+  return rst;
+}
 /* Initialization and de-initialization functions *****************************/
 /* Configuration functions ****************************************************/
 /* IO operation functions *****************************************************/

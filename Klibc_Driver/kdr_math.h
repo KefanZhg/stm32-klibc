@@ -46,7 +46,7 @@ extern const uint32_t KDR_MATH_BIT_TRIANGLE[];
 /* Private macros ------------------------------------------------------------*/
 
 /* Exported functions --------------------------------------------------------*/
-
+uint8_t KDR_MATH_LSB_Index(uint32_t num);
 /* Initialization and de-initialization functions *****************************/
 
 /* Configuration functions ****************************************************/
